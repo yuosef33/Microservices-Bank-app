@@ -13,6 +13,7 @@ import com.yuosef.accounts.Models.Customer;
 import com.yuosef.accounts.Service.IAccountsService;
 import com.yuosef.accounts.constants.AccountsConstants;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

@@ -1,0 +1,39 @@
+services:
+  accounts:
+    image: yuosef33/accounts:v1
+    container_name: accounts-ms
+    ports:
+      - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - eazybank
+
+  cards:
+    image: yuosef33/cards:v1
+    container_name: cards-ms
+    ports:
+      - "9000:9000"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - eazybank
+  loans:
+    image: yuosef33/loans:v1
+    container_name: loans-ms
+    ports:
+      - "8090:8090"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - eazybank
+
+networks:
+  eazybank:
+    driver: "bridge"
