@@ -1,0 +1,11 @@
+build:
+  version: "1.0"
+
+accounts:
+  message: "Welcome to EazyBank accounts related local APIs "
+  contactDetails:
+    name: "yuosef jamal prod - Developer"
+    email: "yuosefprod@eazybank.com"
+  onCallSupport:
+    - (555) 555-1111
+    - (555) 523-1111

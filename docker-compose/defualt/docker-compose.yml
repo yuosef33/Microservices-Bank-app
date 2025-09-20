@@ -1,38 +1,87 @@
 services:
+  rabbitmq:
+    image: rabbitmq:4-management
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
+  configserver:
+    image: yuosef33/configserver:v2
+    container_name: configserver-ms
+    ports:
+      - "8071:8071"
+    healthcheck:
+      test: "curl --fail --silent localhost:8071/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    depends_on:
+        rabbitmq:
+          condition: service_healthy
+    extends:
+      file: common-config.yml
+      service: microservice-base-config
+
+
+
   accounts:
-    image: yuosef33/accounts:v1
+    image: yuosef33/accounts:v2
     container_name: accounts-ms
     ports:
       - "8080:8080"
-    deploy:
-      resources:
-        limits:
-          memory: 700m
-    networks:
-      - eazybank
+    environment:
+        SPRING_APPLICATION_NAME: "accounts"
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+    depends_on:
+      configserver:
+        condition: service_healthy
+
+
 
   cards:
-    image: yuosef33/cards:v1
+    image: yuosef33/cards:v2
     container_name: cards-ms
     ports:
       - "9000:9000"
-    deploy:
-      resources:
-        limits:
-          memory: 700m
-    networks:
-      - eazybank
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+    environment:
+      SPRING_APPLICATION_NAME: "cards"
+    depends_on:
+      configserver:
+        condition: service_healthy
+
+
+
   loans:
-    image: yuosef33/loans:v1
+    image: yuosef33/loans:v2
     container_name: loans-ms
     ports:
       - "8090:8090"
-    deploy:
-      resources:
-        limits:
-          memory: 700m
-    networks:
-      - eazybank
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+    environment:
+      SPRING_APPLICATION_NAME: "loans"
+    depends_on:
+      configserver:
+        condition: service_healthy
+
+name: default_profile
 
 networks:
   eazybank:
