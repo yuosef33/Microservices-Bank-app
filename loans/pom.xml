@@ -65,8 +65,8 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -107,7 +107,7 @@
                 <version>3.4.2</version>
                 <configuration>
                     <to>
-                        <image>yuosef33/${project.artifactId}:v2</image>
+                        <image>yuosef33/${project.artifactId}:v3</image>
                     </to>
                 </configuration>
             </plugin>

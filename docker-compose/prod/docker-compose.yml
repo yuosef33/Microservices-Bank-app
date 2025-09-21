@@ -15,8 +15,43 @@ services:
       file: common-config.yml
       service: network-deploy-service
 
+  accountsdb:
+    container_name: accountsdb
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: "accountsdb"
+      MYSQL_ROOT_URL: "jdbc:mysql://accountsdb:3306/accountsdb"
+    extends:
+      file: common-config.yml
+      service: microservice-db-config
+
+
+  cardsdb:
+    container_name: cardsdb
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_DATABASE: "cardsdb"
+      MYSQL_ROOT_URL: "jdbc:mysql://cardsdb:3306/cardsdb"
+    extends:
+      file: common-config.yml
+      service: microservice-db-config
+
+
+  loansdb:
+    container_name: loansdb
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: "loansdb"
+      MYSQL_ROOT_URL: "jdbc:mysql://loansdb:3306/loansdb"
+    extends:
+      file: common-config.yml
+      service: microservice-db-config
+
   configserver:
-    image: yuosef33/configserver:v2
+    image: yuosef33/configserver:v3
     container_name: configserver-ms
     ports:
       - "8071:8071"
@@ -27,8 +62,8 @@ services:
       retries: 10
       start_period: 10s
     depends_on:
-        rabbitmq:
-          condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     extends:
       file: common-config.yml
       service: microservice-base-config
@@ -36,23 +71,26 @@ services:
 
 
   accounts:
-    image: yuosef33/accounts:v2
+    image: yuosef33/accounts:v3
     container_name: accounts-ms
     ports:
       - "8080:8080"
     environment:
-        SPRING_APPLICATION_NAME: "accounts"
+      SPRING_APPLICATION_NAME: "accounts"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://accountsdb:3306/accountsdb"
     extends:
       file: common-config.yml
       service: microservice-configserver-config
     depends_on:
       configserver:
         condition: service_healthy
+      accountsdb:
+        condition: service_healthy
 
 
 
   cards:
-    image: yuosef33/cards:v2
+    image: yuosef33/cards:v3
     container_name: cards-ms
     ports:
       - "9000:9000"
@@ -61,14 +99,16 @@ services:
       service: microservice-configserver-config
     environment:
       SPRING_APPLICATION_NAME: "cards"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://cardsdb:3306/cardsdb"
     depends_on:
       configserver:
         condition: service_healthy
-
+      cardsdb:
+        condition: service_healthy
 
 
   loans:
-    image: yuosef33/loans:v2
+    image: yuosef33/loans:v3
     container_name: loans-ms
     ports:
       - "8090:8090"
@@ -77,8 +117,11 @@ services:
       service: microservice-configserver-config
     environment:
       SPRING_APPLICATION_NAME: "loans"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://loansdb:3306/loansdb"
     depends_on:
       configserver:
+        condition: service_healthy
+      loansdb:
         condition: service_healthy
 
 name: prod_profile
