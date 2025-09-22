@@ -28,3 +28,25 @@ management:
     web:
       exposure:
         include: "*"
+  endpoint:
+    shutdown:
+      access: unrestricted   # allow shutdown endpoint to be accessed from any IP
+  info:
+    env:
+      enabled: true   # enable env info endpoint
+
+
+eureka:
+  instance:
+    prefer-ip-address: true     # prefer IP address over hostname in Eureka registry to avoid issues with Docker container names
+  client:
+    fetch-registry: true       # fetch registry from Eureka server to get service information of other services
+    register-with-eureka: true  # register with Eureka server to be discovered by other services
+    service-url:
+      defaultZone: http://localhost:8070/eureka/     # Eureka server URL
+
+info:
+  app:
+    name: "cards"
+    description: "Eazy Bank cards application"
+    version: "1.0.0"

@@ -70,6 +70,10 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.36</version>
@@ -107,7 +111,7 @@
                 <version>3.4.2</version>
                 <configuration>
                     <to>
-                        <image>yuosef33/${project.artifactId}:v3</image>
+                        <image>yuosef33/${project.artifactId}:v4</image>
                     </to>
                 </configuration>
             </plugin>
