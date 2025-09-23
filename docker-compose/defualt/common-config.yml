@@ -22,6 +22,10 @@ services:
       resources:
         limits:
           memory: 700m
+
+  microservice-for-config-server:
+    extends:
+      service: microservice-base-config
     environment:
       SPRING_RABBITMQ_HOST: "rabbitmq"
 
@@ -35,6 +39,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: "root"
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eurekaserver:8070/eureka/"
 
+
   microservice-for-eureka-config:
     extends:
       service: microservice-base-config
@@ -42,3 +47,11 @@ services:
       SPRING_PROFILES_ACTIVE: default
       SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
       SPRING_APPLICATION_NAME: "eurekaserver"
+
+  microservice-for-gateway-config:
+    extends:
+      service: microservice-base-config
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eurekaserver:8070/eureka/"

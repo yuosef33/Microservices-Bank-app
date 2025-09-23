@@ -29,7 +29,7 @@ public class CustomersServiceImpl implements ICustomerService {
 
 
     @Override
-    public CustomerDetailsDto fetchCustomerDetails(String mobileNumber) {
+    public CustomerDetailsDto fetchCustomerDetails(String mobileNumber,String correlationId) {
         Customer customer= customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
                 () -> new ResourceNotValidException("Customer not found", "mobileNumber", mobileNumber));
 
@@ -41,7 +41,7 @@ public class CustomersServiceImpl implements ICustomerService {
         ResponseEntity<LoansDto> loansDtoResponseEntity;
         ResponseEntity<CardsDto> cardsDtoResponseEntity;
         try {
-          loansDtoResponseEntity = loansFeignClient.fetchloanDetails(mobileNumber);
+          loansDtoResponseEntity = loansFeignClient.fetchloanDetails(correlationId,mobileNumber);
         }catch (Exception e){
             loansDtoResponseEntity=null;
             }
@@ -52,7 +52,7 @@ public class CustomersServiceImpl implements ICustomerService {
             }
 
         try {
-            cardsDtoResponseEntity = cardsFeignClient.fetchCardDetails(mobileNumber);
+            cardsDtoResponseEntity = cardsFeignClient.fetchCardDetails(correlationId,mobileNumber);
         }catch (Exception e){
             cardsDtoResponseEntity=null;
         }

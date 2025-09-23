@@ -4,5 +4,6 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/configserver" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/eurekaserver" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/gatewayserver" vcs="Git" />
   </component>
 </project>

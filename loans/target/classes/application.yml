@@ -26,9 +26,17 @@ management:
     web:
       exposure:
         include: "*"
+  health:
+    readinessstate:
+      enabled: true
+    livenessstate:
+      enabled: true
   endpoint:
     shutdown:
       access: unrestricted   # allow shutdown endpoint to be accessed from any IP
+    health:
+      probes:
+        enabled: true # allow shutdown endpoint to be accessed from any IP
   info:
     env:
       enabled: true   # enable env info endpoint
@@ -48,3 +56,9 @@ info:
     version: "1.0.0"
     port: 8090
     developer: "yuosef jamal"
+
+logging:
+  level:
+    com:
+      eazybytes:
+        loans: DEBUG

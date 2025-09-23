@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: gatewayserver
+  config:
+   import: "optional:configserver:http://localhost:8071/"
+  cloud:
+    gateway:
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: false    # Enable service discovery for routes
+              ## we used gateway dependency not gateway-webmvc dependency
+              lower-case-service-id: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    gateway:
+      access: unrestricted
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: gatewayserver
+    description: "eazybank Gateway Server"
+    version: "1.0.0"
+
+logging:
+  level:
+    com:
+      yuosef:
+        gatewayserver: DEBUG
