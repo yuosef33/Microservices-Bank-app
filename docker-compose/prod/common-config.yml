@@ -52,6 +52,10 @@ services:
     extends:
       service: microservice-base-config
     environment:
+      SPRING_REDIS_HOST: "redis"
+      SPRING_REDIS_PORT: "6379"
+      SPRING_REDIS_TIMEOUT: 1s
+      SPRING_REDIS_CONNECT_TIMEOUT: 2s
       SPRING_PROFILES_ACTIVE: prod
       SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eurekaserver:8070/eureka/"

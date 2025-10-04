@@ -19,6 +19,13 @@ spring:
     port: 5672
     username: "guest"
     password: "guest"
+
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+
+
 server:
   port: 8080
 
@@ -42,6 +49,7 @@ management:
     env:
       enabled: true   # enable env info endpoint
 
+
 eureka:
   instance:
     prefer-ip-address: true     # prefer IP address over hostname in Eureka registry to avoid issues with Docker container names
@@ -62,3 +70,30 @@ logging:
     com:
       yuosef:
         accounts: DEBUG
+
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      sliding-window-size: 5
+      permittedNumberOfCallsInHalfOpenState: 2
+      failure-rate-threshold: 50
+      wait-duration-in-open-state: 10000
+
+resilience4j.retry:
+  configs:
+    default:
+      max-attempts: 3
+      wait-duration: 100
+      enable-exponential-backoff: true
+      exponential-backoff-multiplier: 2
+      ignore-exceptions:
+        - java.util.concurrent.TimeoutException
+      retry-exceptions:
+        - java.lang.NullPointerException
+
+resilience4j.ratelimiter:
+  configs:
+    default:
+      timeout-duration: 1000
+      limit-refresh-period: 5000
+      limit-for-period: 1

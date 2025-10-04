@@ -17,7 +17,7 @@ services:
 
 
   eurekaserver:
-    image: yuosef33/eurekaserver:v5
+    image: yuosef33/eurekaserver:v6
     container_name: eurekaserver-ms
     ports:
       - "8070:8070"
@@ -73,7 +73,7 @@ services:
 
 
   configserver:
-    image: yuosef33/configserver:v5
+    image: yuosef33/configserver:v6
     container_name: configserver-ms
     ports:
       - "8071:8071"
@@ -93,7 +93,7 @@ services:
 
 
   accounts:
-    image: yuosef33/accounts:v5
+    image: yuosef33/accounts:v6
     container_name: accounts-ms
     ports:
       - "8080:8080"
@@ -120,7 +120,7 @@ services:
 
 
   cards:
-    image: yuosef33/cards:v5
+    image: yuosef33/cards:v6
     container_name: cards-ms
     ports:
       - "9000:9000"
@@ -145,7 +145,7 @@ services:
         condition: service_healthy
 
   loans:
-    image: yuosef33/loans:v5
+    image: yuosef33/loans:v6
     container_name: loans-ms
     ports:
       - "8090:8090"
@@ -169,9 +169,20 @@ services:
       eurekaserver:
         condition: service_healthy
 
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: [ "CMD-SHELL", "redis-cli ping | grep PONG" ]
+      timeout: 10s
+      retries: 10
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
 
   gatewayserver:
-    image: yuosef33/gatewayserver:v5
+    image: yuosef33/gatewayserver:v6
     container_name: gatewayserver-ms
     ports:
       - "8072:8072"
@@ -188,7 +199,8 @@ services:
         condition: service_healthy
       loansdb:
         condition: service_healthy
-
+      redis:
+        condition: service_healthy
 name: qa_profile
 
 networks:
